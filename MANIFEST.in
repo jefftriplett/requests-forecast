@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+include VERSION
+recursive-include docs *.rst *.py *.bat

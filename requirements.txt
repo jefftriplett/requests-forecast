@@ -1,0 +1,6 @@
+httpretty==0.5.13
+pytest-cov==1.6
+pytest==2.3.4
+pytz==2012h
+
+git+git://github.com/kennethreitz/requests.git@ba25184ed5f0bf9b876dea3cf4312fa35b539a7c
