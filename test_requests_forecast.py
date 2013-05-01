@@ -17,20 +17,16 @@ def test_forecast_currently():
         body=open('tests/test_full.json', 'r').read(),
         content_type='text/json')
 
-    forecast = Forecast(apikey)
-
-    data = forecast.get(
-        latitude=latitude,
-        longitude=longitude
-    )
+    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
 
     assert forecast.currently.keys() == [u'precipIntensity', u'temperature', u'icon', u'cloudCover', u'summary', u'pressure', u'windSpeed', u'visibility', u'time', u'humidity', u'windBearing']
     assert forecast.currently['temperature'] == 58.9
+    assert forecast.currently.temperature == 58.9
     assert forecast.currently['summary'] == u'Mostly Cloudy'
 
     # test that timestamps are turned into datetime's
     assert forecast.currently['time'] == datetime(2013, 3, 28, 19, 8, 25)
-    assert forecast.currently['time'] == data['currently']['time']
+    #assert forecast.currently['time'] == data['currently']['time']
 
 
 @httprettified
@@ -41,12 +37,7 @@ def test_forecast_daily():
         body=open('tests/test_full.json', 'r').read(),
         content_type='text/json')
 
-    forecast = Forecast(apikey)
-
-    data = forecast.get(
-        latitude=latitude,
-        longitude=longitude
-    )
+    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
 
     assert forecast.daily.keys() == [u'summary', u'data', u'icon']
     assert forecast.daily['icon'] == u'rain'
@@ -64,7 +55,7 @@ def test_forecast_daily():
     assert forecast.daily['data'][0]['temperatureMaxTime'] == datetime(2013, 03, 28, 16, 00, 00)
     assert forecast.daily['data'][0]['temperatureMinTime'] == datetime(2013, 03, 28, 07, 00, 00)
 
-    assert forecast.daily['data'][0]['time'] == data['daily']['data'][0]['time']
+    #assert forecast.daily['data'][0]['time'] == data['daily']['data'][0]['time']
 
 
 @httprettified
@@ -75,14 +66,12 @@ def test_forecast_hourly():
         body=open('tests/test_full.json', 'r').read(),
         content_type='text/json')
 
-    forecast = Forecast(apikey)
+    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
 
-    data = forecast.get(
-        latitude=latitude,
-        longitude=longitude
-    )
+    assert 'data' in forecast.hourly.keys()
+    assert 'icon' in forecast.hourly.keys()
+    assert 'summary' in forecast.hourly.keys()
 
-    assert forecast.hourly.keys() == [u'summary', u'data', u'icon']
     assert forecast.hourly['icon'] == u'partly-cloudy-day'
     assert forecast.hourly['summary'] == u'Mostly cloudy until tomorrow afternoon.'
     assert forecast.hourly['data'][0].keys() == [u'precipIntensity', u'temperature', u'icon', u'cloudCover', u'summary', u'pressure', u'windSpeed', u'visibility', u'time', u'humidity', u'windBearing']
@@ -100,12 +89,7 @@ def test_forecast_minutely():
         body=open('tests/test_full.json', 'r').read(),
         content_type='text/json')
 
-    forecast = Forecast(apikey)
-
-    data = forecast.get(
-        latitude=latitude,
-        longitude=longitude
-    )
+    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
 
     assert forecast.minutely.keys() == [u'summary', u'data', u'icon']
     assert forecast.minutely['icon'] == u'partly-cloudy-day'

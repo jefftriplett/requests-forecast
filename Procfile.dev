@@ -1,0 +1,1 @@
+livereload: livereload -p 8000 -b docs/_build/html
