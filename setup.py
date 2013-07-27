@@ -14,7 +14,7 @@ setup(
     name='requests-forecast',
     license='BSD',
     version=version,
-    description='',
+    description='A minimalist Forecast.io API client.',
     long_description=readme,
     author='Jeff Triplett',
     author_email='jeff.triplett@gmail.com',
