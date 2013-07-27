@@ -40,7 +40,7 @@ Getting the current conditions
 
 ::
 
-    >>> current = forecast.currently()
+    >>> current = forecast.get_currently()
     >>> print current['temperature']
     58.9
 
@@ -50,7 +50,7 @@ Getting minutely conditions
 
 ::
 
-    >>> current = forecast.minutely()
+    >>> current = forecast.get_minutely()
     >>> current['summary']
     u'Mostly cloudy for the hour.'
     >>> current['data'][0].keys()
@@ -63,15 +63,15 @@ Getting hourly conditions
 
 ::
 
-    >>> current = forecast.hourly
+    >>> current = forecast.get_hourly()
     >>> current['temperature']
     59.52
 
 
-    >>> forecast.hourly['summary']
+    >>> forecast.get_hourly()['summary']
     Mostly cloudy until tomorrow afternoon.
 
-    >>> forecast.hourly['data'][0]['temperature']
+    >>> forecast.get_hourly()['data'][0]['temperature']
     >>> 59.52
 
 
@@ -80,11 +80,11 @@ Getting daily conditions
 
 ::
 
-    >>> forecast.daily['summary']
+    >>> forecast.get_daily()['summary']
     u'Mixed precipitation off-and-on throughout the week; temperatures peaking at 70\xb0 on Sunday.'
-    >>> forecast.daily['data'][0]['temperatureMax']
+    >>> forecast.get_daily()['data'][0]['temperatureMax']
     63.85
-    >>> forecast.daily['data'][0]['temperatureMin']
+    >>> forecast.get_daily()['data'][0]['temperatureMin']
     35.05
 
 
@@ -112,16 +112,16 @@ Example usage
     forecast = Forecast(apikey='YOUR-API-KEY')
     data = forecast.get(latitude=38.9717, longitude=-95.235)
 
-    >>> forecast.currently['temperature']
+    >>> forecast.get_currently()['temperature']
     58.9
 
     data = forecast.get(latitude=38.9717, longitude=-95.235,
         time=datetime(year=2013, month=12, day=29))
 
-    >>> forecast.currently['temperature']
+    >>> forecast.get_currently()['temperature']
     58.9
 
-    >>> forecast.currently['temperature']
+    >>> forecast.get_currently()['temperature']
     36.75
 
 

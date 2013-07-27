@@ -4,71 +4,47 @@ import requests
 import time as time_mod
 
 
-FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}{si}'
+FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
 
 
-class AttrDict(dict):
+class DataBlock(dict):
 
-    def __init__(self, *args, **kwargs):
-        self.timezone = kwargs.pop('timezone', '')
-        dict.__init__(self, *args, **kwargs)
+    def __init__(self, data=None, timezone=None):
+        self.timezone = timezone
+        super(DataBlock, self).__init__(data)
+        self.data = []
+
+        if data is not None and 'data' in data:
+            for datapoint in data['data']:
+                self.data.append(DataBlock(datapoint, timezone=timezone))
+                #self.data.append(DataPoint(datapoint, timezone=timezone))
 
     def __getattr__(self, attr):
-        #print '+', attr
-
-        #if attr == 'time' or attr.endswith('Time'):
-            #print '-', attr
-            #if key == 'time' or key.endswith('Time'):
-            #    obj[key] = datetime.datetime.fromtimestamp(int(obj[key])).replace(tzinfo=self.timezone)
-
-        #elif attr == 'timezone':
-            #print '- timezone'
-            #    self.timezone = pytz.timezone(obj[key])
-
         try:
+            if attr in ['expires', 'time'] or attr.endswith('Time'):
+                self[attr] = datetime.datetime.fromtimestamp(int(self[attr])).replace(tzinfo=self.timezone)
             return self[attr]
         except KeyError:
             raise AttributeError(attr)
 
 
-def json_to_python(obj):
-    timezone = None
-    if isinstance(obj, list):
-        return _list_proxy(timezone, obj)
-    elif isinstance(obj, dict):
-        return _dict_proxy(timezone, obj)
-    else:
-        return obj
+class DataPoint(dict):
 
-
-class _list_proxy(object):
-
-    def __init__(self, timezone, proxied_list):
+    def __init__(self, data=None, timezone=None):
         self.timezone = timezone
-        object.__setattr__(self, 'data', proxied_list)
+        super(DataPoint, self).__init__(data)
 
-    def __getitem__(self, a):
-        return json_to_python(object.__getattribute__(self, 'data').__getitem__(a))
-
-    def __setitem__(self, a, v):
-        return object.__getattribute__(self, 'data').__setitem__(a, v)
-
-
-class _dict_proxy(_list_proxy):
-
-    def __init__(self, timezone, proxied_dict):
-        self.timezone = timezone
-        _list_proxy.__init__(self, timezone, proxied_dict)
-
-    def __getattribute__(self, a):
-        return json_to_python(object.__getattribute__(self, 'data').__getitem__(a))
-
-    #def __setattr__(self, a, v):
-    #    return object.__getattribute__(self, 'data').__setitem__(a, v)
+    def __getattr__(self, attr):
+        try:
+            if attr in ['expires', 'time'] or attr.endswith('Time'):
+                self[attr] = datetime.datetime.fromtimestamp(int(self[attr]))  # .replace(tzinfo=self.timezone)
+            return self[attr]
+        except KeyError:
+            raise AttributeError(attr)
 
 
 class Forecast(object):
-    data = None
+    json = None
     timezone = None
 
     def __init__(self, apikey, latitude=None, longitude=None, time=None,
@@ -79,22 +55,12 @@ class Forecast(object):
         self.longitude = longitude
         self.time = time
 
-    def convert_timestamps(self, obj):
-        for key in obj.keys():
-            if key in ['expires', 'time'] or key.endswith('Time'):
-                obj[key] = datetime.datetime.fromtimestamp(int(obj[key])).replace(tzinfo=self.timezone)
-            elif key == 'timezone':
-                self.timezone = pytz.timezone(obj[key])
+        self.get(latitude, longitude, time)
 
-        if isinstance(obj, list):
-            return _list_proxy(self.timezone, obj)
+        if 'timezone' in self.json:
+            self.timezone = pytz.timezone(self.json['timezone'])
 
-        elif isinstance(obj, dict):
-            return _dict_proxy(self.timezone, obj)
-
-        return obj
-
-    def get(self, latitude=None, longitude=None, time=None, si=False):
+    def get(self, latitude=None, longitude=None, time=None):
         if time:
             time = int(time_mod.mktime(time.timetuple()))
 
@@ -102,33 +68,34 @@ class Forecast(object):
             apikey=self.apikey,
             latitude=latitude or self.latitude,
             longitude=longitude or self.longitude,
-            time=',{}'.format(time) if time else '',
-            si='?{}'.format(si) if si else ''
+            time=',{}'.format(time) if self.time else ''
         )
-        request = requests.get(url)
 
-        json_defaults = {}
-        if self.parse_timestamps:
-            #json_defaults['object_hook'] = json_to_python
-            #json_defaults['object_hook'] = self.convert_timestamps
-            json_defaults['object_hook'] = AttrDict
+        request = requests.get(url, headers={'Accept-Encoding': 'gzip'})
+        self.json = request.json()
 
-        self.data = request.json(**json_defaults)
+    def get_alerts(self):
+        if 'alerts' in self.json:
+            #return self.json.alerts
+            return DataBlock(self.json.alerts, self.timezone)
+        return DataBlock()
 
-        return self.data
+    def get_currently(self):
+        if 'currently' in self.json:
+            return DataBlock(self.json['currently'], self.timezone)
+        return DataBlock()
 
-    @property
-    def currently(self):
-        return self.data.currently  # ('currently', None)
+    def get_daily(self):
+        if 'daily' in self.json:
+            return DataBlock(self.json['daily'], self.timezone)
+        return DataBlock()
 
-    @property
-    def daily(self):
-        return self.data.daily  # get('daily', None)
+    def get_hourly(self):
+        if 'hourly' in self.json:
+            return DataBlock(self.json['hourly'], self.timezone)
+        return DataBlock()
 
-    @property
-    def hourly(self):
-        return self.data.hourly  # get('hourly', None)
-
-    @property
-    def minutely(self):
-        return self.data.minutely  # get('minutely', None)
+    def get_minutely(self):
+        if 'minutely' in self.json:
+            return DataBlock(self.json['minutely'], self.timezone)
+        return DataBlock()
