@@ -20,6 +20,7 @@ setup(
     author_email='jeff.triplett@gmail.com',
     url='https://github.com/jefftriplett/requests-forecast',
     py_modules=['requests_forecast'],
+    install_requires=['requests>=1.2', 'pytz'],
     packages=find_packages(),
     classifiers=[
         'Environment :: Web Environment',
