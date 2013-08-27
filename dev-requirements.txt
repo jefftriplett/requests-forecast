@@ -1,0 +1,12 @@
+-r requirements.txt
+
+bumpversion==0.3.2
+check-manifest==0.12
+cov-core==1.7
+coverage==3.6
+httpretty==0.5.13
+invoke==0.3.0
+pytest-cov==1.6
+pytest==2.3.4
+Sphinx==1.2b1
+wheel==0.21.0

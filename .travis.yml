@@ -11,10 +11,6 @@ env:
     - TOXENV=py26
     - TOXENV=py27
 
-before_install:
-  - export PIP_USE_MIRRORS=true
-  - export PIP_INDEX_URL=https://simple.crate.io/
-
 install:
     - pip install tox --use-mirrors
 
@@ -23,5 +19,5 @@ script:
 
 after_success:
   - coverage report
-  - pip install --quiet --use-mirrors python-coveralls
+  - pip install python-coveralls --use-mirrors
   - coveralls
