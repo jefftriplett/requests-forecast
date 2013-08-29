@@ -15,26 +15,6 @@ __copyright__ = 'Copyright 2013 Jeff Triplett'
 FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
 
 
-class DataBlock(dict):
-
-    def __init__(self, data={}, timezone=None):
-        self.timezone = timezone
-        super(DataBlock, self).__init__(data)
-        self.data = []
-
-        if data is not None and 'data' in data:
-            for datapoint in data['data']:
-                self.data.append(DataBlock(datapoint, timezone=timezone))
-
-    def __getattr__(self, attr):
-        try:
-            if attr in ['expires', 'time'] or attr.endswith('Time'):
-                self[attr] = datetime.datetime.fromtimestamp(int(self[attr])).replace(tzinfo=self.timezone)
-            return self[attr]
-        except KeyError:
-            raise AttributeError(attr)
-
-
 class DataPoint(dict):
 
     def __init__(self, data=None, timezone=None):
@@ -50,12 +30,23 @@ class DataPoint(dict):
             raise AttributeError(attr)
 
 
+class DataBlock(DataPoint):
+
+    def __init__(self, data=None, timezone=None):
+        self.timezone = timezone
+        super(DataBlock, self).__init__(data or {})
+        self.data = []
+
+        if data is not None and 'data' in data:
+            for datapoint in data['data']:
+                self.data.append(DataBlock(datapoint, timezone=timezone))
+
+
 class Forecast(object):
     json = None
     timezone = None
 
-    def __init__(self, apikey, latitude=None, longitude=None, time=None,
-                 parse_timestamps=True):
+    def __init__(self, apikey, latitude=None, longitude=None, time=None, parse_timestamps=True):
         self.apikey = apikey
         self.parse_timestamps = parse_timestamps
         self.latitude = latitude
