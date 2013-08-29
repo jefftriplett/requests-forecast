@@ -1,7 +1,15 @@
+# -*- coding: utf-8 -*-
 import datetime
 import pytz
 import requests
 import time as time_mod
+
+
+__title__ = 'requests'
+__version__ = '0.2.0'
+__author__ = 'Jeff Triplett'
+__license__ = 'BSD'
+__copyright__ = 'Copyright 2013 Jeff Triplett'
 
 
 FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
@@ -17,7 +25,6 @@ class DataBlock(dict):
         if data is not None and 'data' in data:
             for datapoint in data['data']:
                 self.data.append(DataBlock(datapoint, timezone=timezone))
-                #self.data.append(DataPoint(datapoint, timezone=timezone))
 
     def __getattr__(self, attr):
         try:
