@@ -20,4 +20,4 @@ def foreman():
 def test():
     run('py.test '
         '--cov-report term-missing '
-        '--cov test_requests_forecast.py')
+        '--cov tests/test_requests_forecast.py')
