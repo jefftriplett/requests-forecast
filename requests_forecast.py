@@ -6,7 +6,7 @@ import time as time_mod
 
 
 __title__ = 'requests'
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __author__ = 'Jeff Triplett'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2013 Jeff Triplett'
