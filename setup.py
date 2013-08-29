@@ -7,13 +7,10 @@ with open('README.rst') as f:
 with open('LICENSE') as f:
     license = f.read()
 
-with open('VERSION') as f:
-    version = f.read().strip()
-
 setup(
     name='requests-forecast',
     license='BSD',
-    version=version,
+    version='0.1.0',
     description='A minimalist Forecast.io API client.',
     long_description=readme,
     author='Jeff Triplett',
