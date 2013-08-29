@@ -105,7 +105,7 @@ html_theme = 'default'
 #html_theme_path = []
 sys.path.append(os.path.abspath('_themes'))
 html_theme_path = ['_themes']
-html_theme = 'kr'
+#html_theme = 'kr'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
