@@ -145,3 +145,15 @@ def test_forecast_minutely():
     assert len(minutely['data']) == 61
     #assert minutely['data'][0].keys() == [u'precipIntensity', u'time']
     assert datetime.fromtimestamp(int(minutely['data'][0]['time'])) == datetime(2013, 3, 28, 19, 8)
+
+
+@httprettified
+def test_forecast_alerts():
+    HTTPretty.register_uri(
+        HTTPretty.GET,
+        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
+        body=open('tests/test_full.json', 'r').read(),
+        content_type='text/json')
+
+    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    alerts = forecast.get_alerts()

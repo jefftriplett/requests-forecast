@@ -9,7 +9,7 @@ FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longi
 
 class DataBlock(dict):
 
-    def __init__(self, data=None, timezone=None):
+    def __init__(self, data={}, timezone=None):
         self.timezone = timezone
         super(DataBlock, self).__init__(data)
         self.data = []
@@ -76,7 +76,6 @@ class Forecast(object):
 
     def get_alerts(self):
         if 'alerts' in self.json:
-            #return self.json.alerts
             return DataBlock(self.json.alerts, self.timezone)
         return DataBlock()
 
