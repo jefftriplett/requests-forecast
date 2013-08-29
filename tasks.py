@@ -17,6 +17,18 @@ def foreman():
 
 
 @task
+def pypi():
+    run('python setup.py sdist')
+    run('python setup.py bdist_wheel')
+
+
+@task
+def pypi_upload():
+    run('python setup.py sdist upload')
+    run('python setup.py bdist_wheel upload')
+
+
+@task
 def test():
     run('py.test '
         '--cov-report term-missing '
