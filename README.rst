@@ -31,6 +31,12 @@ To install requests-forecast, simply:
     $ pip install requests-forecast
 
 
+Documentation
+=============
+
+- Development version: http://requests-forecast.rtfd.org.
+
+
 Quickstart
 ==========
 
