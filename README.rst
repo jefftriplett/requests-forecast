@@ -2,6 +2,15 @@
 requests-forecast
 =================
 
+.. image:: https://badge.fury.io/py/requests-forecast.png
+    :target: http://badge.fury.io/py/requests-forecast
+
+.. image:: https://travis-ci.org/jefftriplett/requests-forecast.png?branch=master
+        :target: https://travis-ci.org/jefftriplett/requests-forecast
+
+.. image:: https://pypip.in/d/requests-forecast/badge.png
+        :target: https://crate.io/packages/requests-forecast?version=latest
+
 For complete docs and API options see: https://developer.forecast.io/docs/v2
 
 
