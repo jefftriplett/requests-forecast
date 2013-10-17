@@ -1,2 +1,2 @@
-pytz==2012h
+pytz==2013.7
 requests>=1.2.0
