@@ -35,9 +35,7 @@ def test_forecast_currently():
     assert currently['temperature'] == 58.9
     assert currently.temperature == 58.9
     assert currently['summary'] == u'Mostly Cloudy'
-
-    # test that timestamps are turned into datetime's
-    assert datetime.fromtimestamp(int(currently['time'])) == datetime(2013, 3, 28, 19, 8, 25)
+    assert int(currently['time']) == 1364515705
 
 
 @httprettified
@@ -79,15 +77,11 @@ def test_forecast_daily():
 
     assert daily['data'][0]['temperatureMax'] == 63.85
     assert daily['data'][0]['temperatureMin'] == 35.05
-
-    # test that timestamps are turned into datetime's
-    assert datetime.fromtimestamp(int(daily['data'][0]['time'])) == datetime(2013, 03, 28, 00, 00, 00)
-    assert datetime.fromtimestamp(int(daily['data'][0]['sunriseTime'])) == datetime(2013, 03, 28, 07, 12, 29)
-    assert datetime.fromtimestamp(int(daily['data'][0]['sunsetTime'])) == datetime(2013, 03, 28, 19, 41, 39)
-    assert datetime.fromtimestamp(int(daily['data'][0]['temperatureMaxTime'])) == datetime(2013, 03, 28, 16, 00, 00)
-    assert datetime.fromtimestamp(int(daily['data'][0]['temperatureMinTime'])) == datetime(2013, 03, 28, 07, 00, 00)
-
-    #assertdaily['data'][0]['time'] == data['daily']['data'][0]['time']
+    assert int(daily['data'][0]['time']) == 1364446800
+    assert int(daily['data'][0]['sunriseTime']) == 1364472749
+    assert int(daily['data'][0]['sunsetTime']) == 1364517699
+    assert int(daily['data'][0]['temperatureMaxTime']) == 1364504400
+    assert int(daily['data'][0]['temperatureMinTime']) == 1364472000
 
 
 @httprettified
@@ -121,7 +115,7 @@ def test_forecast_hourly():
 
     assert len(hourly['data']) == 49
     assert hourly['data'][0]['temperature'] == 59.52
-    assert datetime.fromtimestamp(int(hourly['data'][0]['time'])) == datetime(2013, 3, 28, 19, 0)
+    assert int(hourly['data'][0]['time']) == 1364515200
 
 
 @httprettified
@@ -144,7 +138,7 @@ def test_forecast_minutely():
 
     assert len(minutely['data']) == 61
     #assert minutely['data'][0].keys() == [u'precipIntensity', u'time']
-    assert datetime.fromtimestamp(int(minutely['data'][0]['time'])) == datetime(2013, 3, 28, 19, 8)
+    assert int(minutely['data'][0]['time']) == 1364515680
 
 
 @httprettified
