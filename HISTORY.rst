@@ -3,6 +3,13 @@
 History
 -------
 
+0.4.0 (2013-10-31)
+++++++++++++++++++
+
+* Fix __title__ meta data.
+* Fixed date tests.
+* Updated dependencies.
+
 0.3.0 (2013-08-11)
 ++++++++++++++++++
 
