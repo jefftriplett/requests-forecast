@@ -4,4 +4,4 @@ Usage
 
 To use requests-forecast in a project::
 
-	import requests-forecast
+	from requests_forecast import Forecast

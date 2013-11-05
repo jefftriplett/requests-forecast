@@ -6,7 +6,6 @@ At the command line::
 
     $ easy_install requests-forecast
 
-Or, if you have virtualenvwrapper installed::
+Or, if you have pip installed (which you should)::
 
-    $ mkvirtualenv requests-forecast
     $ pip install requests-forecast
