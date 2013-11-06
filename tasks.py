@@ -23,9 +23,21 @@ def pypi():
 
 
 @task
+def pypi_test():
+    run('python setup.py sdist -r test')
+    run('python setup.py bdist_wheel -r test')
+
+
+@task
 def pypi_upload():
     run('python setup.py sdist upload')
     run('python setup.py bdist_wheel upload')
+
+
+@task
+def pypi_test_upload():
+    run('python setup.py sdist upload -r test')
+    run('python setup.py bdist_wheel upload -r test')
 
 
 @task
