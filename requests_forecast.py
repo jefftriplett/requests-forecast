@@ -8,7 +8,7 @@ from decimal import Decimal
 
 
 __title__ = 'requests-forecast'
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'Jeff Triplett'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2013 Jeff Triplett'

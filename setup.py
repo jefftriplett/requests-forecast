@@ -10,7 +10,7 @@ with open('LICENSE') as f:
 setup(
     name='requests-forecast',
     license='BSD',
-    version='0.4.1',
+    version='0.4.2',
     description='A minimalist Forecast.io API client.',
     long_description=readme,
     author='Jeff Triplett',
