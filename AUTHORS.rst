@@ -9,3 +9,4 @@ Primary Authors:
 Thanks to:
 
 * katy lavallee <katylava>
+* Adam Fast <adamfast>

@@ -4,6 +4,8 @@ import pytz
 import requests
 import time as time_mod
 
+from decimal import Decimal
+
 
 __title__ = 'requests-forecast'
 __version__ = '0.4.1'
@@ -23,8 +25,10 @@ class DataPoint(dict):
 
     def __getattr__(self, attr):
         try:
-            if attr in ['expires', 'time'] or attr.endswith('Time'):
+            if attr in ('expires', 'time') or attr.endswith('Time'):
                 self[attr] = datetime.datetime.fromtimestamp(int(self[attr]))  # .replace(tzinfo=self.timezone)
+            elif attr in ('cloudCover', 'precipProbability', 'humidity'):
+                self[attr] = Decimal(self[attr]) * Decimal('100.0')
             return self[attr]
         except KeyError:
             raise AttributeError(attr)
