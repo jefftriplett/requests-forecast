@@ -3,6 +3,11 @@
 History
 -------
 
+0.5.0 (2013-12-10)
+++++++++++++++++++
+
+* The Decimal update should have been a minor update instead of a patch.
+
 0.4.2 (2013-12-10)
 ++++++++++++++++++
 
