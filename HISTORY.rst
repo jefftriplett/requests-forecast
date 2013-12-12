@@ -3,6 +3,15 @@
 History
 -------
 
+0.6.0 (2013-12-11)
+++++++++++++++++++
+
+* Refactored DataBlock to merge DataPoint and DataBlock.
+* Simplified __getattr__ and removed extra field processing.
+* Fixed alert class.
+* Removed parse_timestamps since it's not used.
+* Changed decimal to float conversions.
+
 0.5.0 (2013-12-10)
 ++++++++++++++++++
 
