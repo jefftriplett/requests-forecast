@@ -4,8 +4,6 @@ import pytz
 import requests
 import time as time_mod
 
-from decimal import Decimal
-
 
 __title__ = 'requests-forecast'
 __version__ = '0.5.0'
@@ -15,44 +13,46 @@ __copyright__ = 'Copyright 2013 Jeff Triplett'
 
 
 FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
+ALERT_FIELDS = ('alerts',)
+DATA_FIELDS = ('data',)
+DECIMAL_FIELDS = ('cloudCover', 'precipProbability', 'humidity')
+TIME_FIELDS = ('expires', 'time')
 
 
-class DataPoint(dict):
+class DataBlock(dict):
 
     def __init__(self, data=None, timezone=None):
         self.timezone = timezone
-        super(DataPoint, self).__init__(data)
+        if data:
+            for key in data.keys():
+                if key in TIME_FIELDS or key.endswith('Time'):
+                    data[key] = datetime.datetime.fromtimestamp(int(data[key]))  # .replace(tzinfo=self.timezone)
+                elif key in DECIMAL_FIELDS:
+                    data[key] = float(data[key]) * float('100.0')
+                elif key in DATA_FIELDS:
+                    self.data = []
+                    for datapoint in data[key]:
+                        self.data.append(DataBlock(data=datapoint, timezone=timezone))
+                elif key in ALERT_FIELDS:
+                    self.alerts = []
+                    for alert in data[key]:
+                        self.alerts.append(DataBlock(data=alert, timezone=timezone))
+
+            super(DataBlock, self).__init__(data)
 
     def __getattr__(self, attr):
         try:
-            if attr in ('expires', 'time') or attr.endswith('Time'):
-                self[attr] = datetime.datetime.fromtimestamp(int(self[attr]))  # .replace(tzinfo=self.timezone)
-            elif attr in ('cloudCover', 'precipProbability', 'humidity'):
-                self[attr] = Decimal(self[attr]) * Decimal('100.0')
             return self[attr]
         except KeyError:
             raise AttributeError(attr)
-
-
-class DataBlock(DataPoint):
-
-    def __init__(self, data=None, timezone=None):
-        self.timezone = timezone
-        super(DataBlock, self).__init__(data or {})
-        self.data = []
-
-        if data is not None and 'data' in data:
-            for datapoint in data['data']:
-                self.data.append(DataBlock(datapoint, timezone=timezone))
 
 
 class Forecast(object):
     json = None
     timezone = None
 
-    def __init__(self, apikey, latitude=None, longitude=None, time=None, parse_timestamps=True):
+    def __init__(self, apikey, latitude=None, longitude=None, time=None):
         self.apikey = apikey
-        self.parse_timestamps = parse_timestamps
         self.latitude = latitude
         self.longitude = longitude
         self.time = time
@@ -78,7 +78,10 @@ class Forecast(object):
 
     def get_alerts(self):
         if 'alerts' in self.json:
-            return DataBlock(self.json.alerts, self.timezone)
+            alerts = []
+            for alert in self.json['alerts']:
+                alerts.append(DataBlock(alert, self.timezone))
+            return alerts
         return DataBlock()
 
     def get_currently(self):
