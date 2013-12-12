@@ -3,9 +3,7 @@ include *.rst
 include *.txt
 include .travis.yml
 include LICENSE
-include README.rst
 include tox.ini
-include VERSION
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs Makefile
