@@ -9,7 +9,7 @@ __title__ = 'requests-forecast'
 __version__ = '0.6.1'
 __author__ = 'Jeff Triplett'
 __license__ = 'BSD'
-__copyright__ = 'Copyright 2013 Jeff Triplett'
+__copyright__ = 'Copyright 2013-2014 Jeff Triplett'
 
 
 FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
@@ -26,7 +26,7 @@ class DataBlock(dict):
         if data:
             for key in data.keys():
                 if key in TIME_FIELDS or key.endswith('Time'):
-                    data[key] = datetime.datetime.fromtimestamp(int(data[key]))  # .replace(tzinfo=self.timezone)
+                    data[key] = pytz.utc.localize(datetime.datetime.fromtimestamp(int(data[key])))
                 elif key in DECIMAL_FIELDS:
                     data[key] = float(data[key]) * float('100.0')
                 elif key in DATA_FIELDS:
