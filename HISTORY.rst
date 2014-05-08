@@ -3,6 +3,12 @@
 History
 -------
 
+0.6.2 (2014-05-07)
+++++++++++++++++++
+
+* Fix for timezones
+* Fix for travis.ci timezone failures
+
 0.6.1 (2014-05-07)
 ++++++++++++++++++
 
