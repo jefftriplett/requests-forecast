@@ -1,4 +1,5 @@
 import httpretty
+import pytz
 
 from datetime import datetime
 
@@ -37,8 +38,7 @@ def test_forecast_currently():
     assert currently['temperature'] == 58.9
     assert currently.temperature == 58.9
     assert currently['summary'] == u'Mostly Cloudy'
-    assert currently['time'] == datetime(2013, 3, 28, 19, 8, 25)
-
+    assert str(currently['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 0, 8, 25)))
 
 @httpretty.activate
 def test_forecast_daily():
@@ -77,11 +77,12 @@ def test_forecast_daily():
 
     assert daily['data'][0]['temperatureMax'] == 63.85
     assert daily['data'][0]['temperatureMin'] == 35.05
-    assert daily['data'][0]['time'] == datetime(2013, 3, 28, 0, 0)
-    assert daily['data'][0]['sunriseTime'] == datetime(2013, 3, 28, 7, 12, 29)
-    assert daily['data'][0]['sunsetTime'] == datetime(2013, 3, 28, 19, 41, 39)
-    assert daily['data'][0]['temperatureMaxTime'] == datetime(2013, 3, 28, 16, 0)
-    assert daily['data'][0]['temperatureMinTime'] == datetime(2013, 3, 28, 7, 0)
+    assert str(daily['data'][0]['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 28, 5, 0)))
+    assert str(daily['data'][0]['sunriseTime'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 28, 12, 12, 29)))
+    assert str(daily['data'][0]['sunsetTime'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 00, 41, 39)))
+
+    assert str(daily['data'][0]['temperatureMaxTime'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 28, 21, 0)))
+    assert str(daily['data'][0]['temperatureMinTime'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 28, 12, 0)))
 
 
 @httpretty.activate
@@ -114,8 +115,7 @@ def test_forecast_hourly():
 
     assert len(hourly['data']) == 49
     assert hourly['data'][0]['temperature'] == 59.52
-    assert hourly['data'][0]['time'] == datetime(2013, 3, 28, 19, 0)
-
+    assert str(hourly['data'][0]['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 0, 0)))
 
 @httpretty.activate
 def test_forecast_minutely():
@@ -136,7 +136,7 @@ def test_forecast_minutely():
     assert len(minutely['data']) == 61
     assert 'precipIntensity' in minutely['data'][0].keys()
     assert 'time' in minutely['data'][0].keys()
-    assert minutely['data'][0]['time'] == datetime(2013, 3, 28, 19, 8)
+    assert str(minutely['data'][0]['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 0, 8)))
 
 
 @httpretty.activate
@@ -150,5 +150,5 @@ def test_forecast_alerts():
 
     assert len(alerts) == 1
     assert alerts[0]['title'] == u'Freeze Warning for Marin, CA'
-    assert alerts[0]['time'] == datetime(2013, 12, 11, 19, 8)
-    assert alerts[0]['expires'] == datetime(2013, 12, 12, 11, 0)
+    assert str(alerts[0]['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 12, 12, 1, 8)))
+    assert str(alerts[0]['expires'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 12, 12, 17, 0)))
