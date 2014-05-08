@@ -17,6 +17,13 @@ def foreman():
 
 
 @task
+def git_push():
+    run('git push origin master')
+    run('git push bitbucket master')
+    run('git push github master')
+
+
+@task
 def pypi():
     run('python setup.py sdist')
     run('python setup.py bdist_wheel')
