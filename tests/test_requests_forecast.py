@@ -1,23 +1,25 @@
+import httpretty
+
 from datetime import datetime
-from httpretty import HTTPretty, httprettified
 
 from requests_forecast import Forecast
 
 
-apikey = '1234'
-latitude = 38.9717
-longitude = -95.235
+API_KEY = '1234'
+LATITUDE = 38.9717
+LONGITUDE = -95.235
+API_URL = 'https://api.forecast.io/forecast/{0}/{1},{2}'.format(
+    API_KEY, LATITUDE, LONGITUDE
+)
 
 
-@httprettified
+@httpretty.activate
 def test_forecast_currently():
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
-        body=open('tests/full.json', 'r').read(),
+    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
         content_type='text/json')
 
-    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     currently = forecast.get_currently()
 
     assert 'precipIntensity' in currently.keys()
@@ -38,15 +40,13 @@ def test_forecast_currently():
     assert currently['time'] == datetime(2013, 3, 28, 19, 8, 25)
 
 
-@httprettified
+@httpretty.activate
 def test_forecast_daily():
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
-        body=open('tests/full.json', 'r').read(),
+    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
         content_type='text/json')
 
-    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     daily = forecast.get_daily()
 
     assert 'data' in daily.keys()
@@ -84,16 +84,15 @@ def test_forecast_daily():
     assert daily['data'][0]['temperatureMinTime'] == datetime(2013, 3, 28, 7, 0)
 
 
-@httprettified
+@httpretty.activate
 def test_forecast_hourly():
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
-        body=open('tests/full.json', 'r').read(),
+    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
         content_type='text/json')
 
-    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     hourly = forecast.get_hourly()
+
     assert 'data' in hourly.keys()
     assert 'icon' in hourly.keys()
     assert 'summary' in hourly.keys()
@@ -118,15 +117,13 @@ def test_forecast_hourly():
     assert hourly['data'][0]['time'] == datetime(2013, 3, 28, 19, 0)
 
 
-@httprettified
+@httpretty.activate
 def test_forecast_minutely():
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
-        body=open('tests/full.json', 'r').read(),
+    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
         content_type='text/json')
 
-    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     minutely = forecast.get_minutely()
 
     assert 'data' in minutely.keys()
@@ -137,19 +134,18 @@ def test_forecast_minutely():
     assert minutely['summary'] == u'Mostly cloudy for the hour.'
 
     assert len(minutely['data']) == 61
-    assert minutely['data'][0].keys() == [u'precipIntensity', u'time']
+    assert 'precipIntensity' in minutely['data'][0].keys()
+    assert 'time' in minutely['data'][0].keys()
     assert minutely['data'][0]['time'] == datetime(2013, 3, 28, 19, 8)
 
 
-@httprettified
+@httpretty.activate
 def test_forecast_alerts():
-    HTTPretty.register_uri(
-        HTTPretty.GET,
-        'https://api.forecast.io/forecast/1234/38.9717,-95.235',
-        body=open('tests/alerts.json', 'r').read(),
+    body_fixture = open('tests/fixtures/alerts.json', 'r').read()
+    httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
         content_type='text/json')
 
-    forecast = Forecast(apikey, latitude=latitude, longitude=longitude)
+    forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     alerts = forecast.get_alerts()
 
     assert len(alerts) == 1
