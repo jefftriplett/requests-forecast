@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 __title__ = 'requests-forecast'
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 __author__ = 'Jeff Triplett'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2013-2014 Jeff Triplett'
