@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import datetime
 import pytz
 import requests
 import time as time_mod
+
+from datetime import datetime
 
 
 __title__ = 'requests-forecast'
@@ -22,11 +23,18 @@ TIME_FIELDS = ('expires', 'time')
 class DataBlock(dict):
 
     def __init__(self, data=None, timezone=None):
-        self.timezone = timezone
+        self.timezone = str(timezone)
         if data:
             for key in data.keys():
                 if key in TIME_FIELDS or key.endswith('Time'):
-                    data[key] = pytz.utc.localize(datetime.datetime.fromtimestamp(int(data[key])))
+                    if timezone:
+                        tz = pytz.timezone(str(timezone))
+                        utc = pytz.utc
+                        ts = datetime.utcfromtimestamp(int(data[key])).replace(tzinfo=utc)
+                        data[key] = tz.normalize(ts.astimezone(tz))
+                    else:
+                        data[key] = datetime.fromtimestamp(int(data[key]))
+
                 elif key in DECIMAL_FIELDS:
                     data[key] = float(data[key]) * float('100.0')
                 elif key in DATA_FIELDS:
@@ -56,6 +64,7 @@ class Forecast(object):
         self.latitude = latitude
         self.longitude = longitude
         self.time = time
+        #self.units  # TODO Fix units
 
         self.get(latitude, longitude, time)
 
