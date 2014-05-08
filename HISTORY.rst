@@ -3,6 +3,12 @@
 History
 -------
 
+0.6.1 (2014-05-07)
+++++++++++++++++++
+
+* Updated fixtures and tests.
+* Added Python 3.4 support.
+
 0.6.0 (2013-12-11)
 ++++++++++++++++++
 
