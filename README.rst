@@ -57,7 +57,7 @@ Creating a client
 ::
 
     >>> from requests_forecast import Forecast
-    >>> forecast = Forecast(apikey='FORECAST_API_KEY', latitude=38.9717, longitude=-95.235)
+    >>> forecast = Forecast(apikey='YOUR-API-KEY')
 
 
 Getting the current conditions
