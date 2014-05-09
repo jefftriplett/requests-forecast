@@ -18,7 +18,7 @@ requests-forecast
     :alt: Latest Package Version
 
 .. image:: https://pypip.in/d/requests-forecast/badge.png
-    :target: https://crate.io/packages/requests-forecast?version=latest
+    :target: https://pypi.python.org/pypi/requests-forecast
     :alt: Download Status
 
 For complete docs and API options see: https://developer.forecast.io/docs/v2
