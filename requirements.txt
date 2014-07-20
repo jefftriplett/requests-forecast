@@ -1,5 +1,5 @@
 pytz
-requests>1,<2.3
+requests>1,<2.4
 
 bumpversion==0.4.1
 check-manifest==0.19
