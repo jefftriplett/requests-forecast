@@ -16,9 +16,9 @@ API_URL = 'https://api.forecast.io/forecast/{0}/{1},{2}'.format(
 
 @httpretty.activate
 def test_forecast_currently():
-    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    body_fixture = open('test/fixtures/full.json', 'r').read()
     httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
-        content_type='text/json')
+                           content_type='text/json')
 
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     currently = forecast.get_currently()
@@ -40,11 +40,12 @@ def test_forecast_currently():
     assert currently['summary'] == u'Mostly Cloudy'
     assert str(currently['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 0, 8, 25)))
 
+
 @httpretty.activate
 def test_forecast_daily():
-    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    body_fixture = open('test/fixtures/full.json', 'r').read()
     httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
-        content_type='text/json')
+                           content_type='text/json')
 
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     daily = forecast.get_daily()
@@ -87,9 +88,9 @@ def test_forecast_daily():
 
 @httpretty.activate
 def test_forecast_hourly():
-    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    body_fixture = open('test/fixtures/full.json', 'r').read()
     httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
-        content_type='text/json')
+                           content_type='text/json')
 
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     hourly = forecast.get_hourly()
@@ -117,11 +118,12 @@ def test_forecast_hourly():
     assert hourly['data'][0]['temperature'] == 59.52
     assert str(hourly['data'][0]['time'].astimezone(pytz.utc)) == str(pytz.utc.localize(datetime(2013, 3, 29, 0, 0)))
 
+
 @httpretty.activate
 def test_forecast_minutely():
-    body_fixture = open('tests/fixtures/full.json', 'r').read()
+    body_fixture = open('test/fixtures/full.json', 'r').read()
     httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
-        content_type='text/json')
+                           content_type='text/json')
 
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     minutely = forecast.get_minutely()
@@ -141,9 +143,9 @@ def test_forecast_minutely():
 
 @httpretty.activate
 def test_forecast_alerts():
-    body_fixture = open('tests/fixtures/alerts.json', 'r').read()
+    body_fixture = open('test/fixtures/alerts.json', 'r').read()
     httpretty.register_uri(httpretty.GET, API_URL, body=body_fixture,
-        content_type='text/json')
+                           content_type='text/json')
 
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     alerts = forecast.get_alerts()
