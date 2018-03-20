@@ -13,7 +13,7 @@ __license__ = 'BSD'
 __copyright__ = 'Copyright 2013-2014 Jeff Triplett'
 
 
-FORECAST_TEMPLATE = 'https://api.forecast.io/forecast/{apikey}/{latitude},{longitude}{time}'
+FORECAST_TEMPLATE = 'https://api.darksky.net/forecast/{apikey}/{latitude},{longitude}{time}'
 ALERT_FIELDS = ('alerts',)
 DATA_FIELDS = ('data',)
 DECIMAL_FIELDS = ('cloudCover', 'precipProbability', 'humidity')

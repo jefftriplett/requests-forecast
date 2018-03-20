@@ -9,7 +9,7 @@ from requests_forecast import Forecast
 API_KEY = '1234'
 LATITUDE = 38.9717
 LONGITUDE = -95.235
-API_URL = 'https://api.forecast.io/forecast/{0}/{1},{2}'.format(
+API_URL = 'https://api.darksky.net/forecast/{0}/{1},{2}'.format(
     API_KEY, LATITUDE, LONGITUDE
 )
 
