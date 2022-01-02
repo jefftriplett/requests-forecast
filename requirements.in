@@ -1,0 +1,13 @@
+bumpversion
+check-manifest
+cov-core
+coverage
+httpretty
+inflection
+invoke
+pytest
+pytest-cov
+pytz
+requests>1.2
+Sphinx
+wheel
