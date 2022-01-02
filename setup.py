@@ -13,7 +13,7 @@ setup(
     long_description=readme,
     author="Jeff Triplett",
     author_email="jeff.triplett@gmail.com",
-    url="https://gitlab.com/jeff.triplett/requests-forecast",
+    url="https://github.com/jefftriplett/requests-forecast",
     py_modules=["requests_forecast"],
     install_requires=[
         "requests>=1.2",
