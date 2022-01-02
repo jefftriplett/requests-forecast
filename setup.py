@@ -17,7 +17,11 @@ setup(
     author_email='jeff.triplett@gmail.com',
     url='https://gitlab.com/jeff.triplett/requests-forecast',
     py_modules=['requests_forecast'],
-    install_requires=['requests>=1.2', 'pytz'],
+    install_requires=[
+        'cached-property',
+        'requests>=1.2',
+        'pytz',
+    ],
     packages=find_packages(),
     classifiers=[
         'Environment :: Web Environment',
