@@ -3,15 +3,14 @@ import requests
 import time as time_mod
 import warnings
 
-from cached_property import cached_property
 from datetime import datetime
 
 
+__author__ = "Jeff Triplett"
+__copyright__ = "Copyright 2013-2021 Jeff Triplett"
+__license__ = "BSD"
 __title__ = "requests-forecast"
 __version__ = "0.6.2"
-__author__ = "Jeff Triplett"
-__license__ = "BSD"
-__copyright__ = "Copyright 2013-2021 Jeff Triplett"
 
 
 FORECAST_TEMPLATE = "https://api.darksky.net/forecast/{apikey}/{latitude},{longitude}{time}?units={units}"
@@ -44,6 +43,7 @@ class DataBlock(dict):
                         ts = datetime.utcfromtimestamp(int(data[key])).replace(
                             tzinfo=utc
                         )
+                        # data[key] = tz.normalize(ts.astimezone(tz))
                         data[key] = tz.normalize(ts.astimezone(tz))
                     else:
                         data[key] = datetime.fromtimestamp(int(data[key]))
@@ -51,10 +51,6 @@ class DataBlock(dict):
                 elif key in DECIMAL_FIELDS:
                     data[key] = float(data[key]) * float("100.0")
 
-                # elif key in DATA_FIELDS:
-                #    self.data = []
-                #    for datapoint in data[key]:
-                #        self.data.append(DataBlock(data=datapoint, timezone=timezone))
                 elif key in ALERT_FIELDS:
                     self.alerts = []
                     for alert in data[key]:
@@ -104,7 +100,6 @@ class Forecast:
 
         self.json = request.json()
 
-    @cached_property
     def alerts(self):
         if "alerts" in self.json:
             alerts = []
@@ -113,37 +108,32 @@ class Forecast:
             return alerts
         return DataBlock()
 
-    @cached_property
     def currently(self):
         if "currently" in self.json:
             return DataBlock(self.json["currently"], self.timezone)
         return DataBlock()
 
-    @cached_property
     def daily(self):
         if "daily" in self.json:
             return DataBlock(self.json["daily"], self.timezone)
         return DataBlock()
 
-    @cached_property
     def hourly(self):
         if "hourly" in self.json:
             return DataBlock(self.json["hourly"], self.timezone)
         return DataBlock()
 
-    @cached_property
     def minutely(self):
         if "minutely" in self.json:
             return DataBlock(self.json["minutely"], self.timezone)
         return DataBlock()
 
-    @cached_property
     def offset(self):
         if "offset" in self.json:
             return self.json["offset"]
         return None
 
-    @cached_property
+    @property
     def timezone(self):
         if "timezone" in self.json:
             return pytz.timezone(self.json["timezone"])
