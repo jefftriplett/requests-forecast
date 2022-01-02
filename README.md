@@ -7,8 +7,8 @@ For complete docs and API options see: https://developer.forecast.io/docs/v2
 
 ## Requirements
 
-* Python 2.6+
-* requests 1.2.0+
+* Python 3.6+
+* requests
 
 ## Installation
 
