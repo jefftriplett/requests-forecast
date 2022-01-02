@@ -25,28 +25,14 @@ def git_push(c):
 
 @task
 def pypi(c):
-    run("python setup.py sdist")
-    run("python setup.py bdist_wheel")
-
-
-@task
-def pypi_test(c):
-    run("python setup.py sdist -r test")
-    run("python setup.py bdist_wheel -r test")
+    run("python -m build")
 
 
 @task
 def pypi_upload(c):
-    run("python setup.py sdist upload")
-    run("python setup.py bdist_wheel upload")
-
-
-@task
-def pypi_test_upload(c):
-    run("python setup.py sdist upload -r test")
-    run("python setup.py bdist_wheel upload -r test")
+    run("python -m twine upload dist/*")
 
 
 @task
 def test(c):
-    run("py.test")
+    run("pytest")
