@@ -9,14 +9,14 @@ from requests_forecast_v2 import Forecast
 API_KEY = "1234"
 LATITUDE = 38.9717
 LONGITUDE = -95.235
-API_URL = "https://api.darksky.net/forecast/{0}/{1},{2}".format(
+API_URL = "https://api.darksky.net/forecast/{}/{},{}".format(
     API_KEY, LATITUDE, LONGITUDE
 )
 
 
 @httpretty.activate
 def test_alerts():
-    body_fixture = open("test/fixtures/alerts.json", "r").read()
+    body_fixture = open("test/fixtures/alerts.json").read()
     httpretty.register_uri(
         httpretty.GET, API_URL, body=body_fixture, content_type="text/json"
     )
@@ -25,7 +25,7 @@ def test_alerts():
     alerts = forecast.alerts
 
     assert len(alerts) == 1
-    assert alerts[0]["title"] == u"Freeze Warning for Marin, CA"
+    assert alerts[0]["title"] == "Freeze Warning for Marin, CA"
     assert str(alerts[0]["time"].astimezone(pytz.utc)) == str(
         pytz.utc.localize(datetime(2013, 12, 12, 1, 8))
     )
@@ -36,7 +36,7 @@ def test_alerts():
 
 @httpretty.activate
 def test_currently():
-    body_fixture = open("test/fixtures/full.json", "r").read()
+    body_fixture = open("test/fixtures/full.json").read()
     httpretty.register_uri(
         httpretty.GET, API_URL, body=body_fixture, content_type="text/json"
     )
@@ -59,8 +59,8 @@ def test_currently():
 
     assert currently["temperature"] == 58.9
     assert currently.temperature == 58.9
-    assert currently["summary"] == u"Mostly Cloudy"
-    assert currently.summary == u"Mostly Cloudy"
+    assert currently["summary"] == "Mostly Cloudy"
+    assert currently.summary == "Mostly Cloudy"
     assert str(currently["time"].astimezone(pytz.utc)) == str(
         pytz.utc.localize(datetime(2013, 3, 29, 0, 8, 25))
     )
@@ -68,7 +68,7 @@ def test_currently():
 
 @httpretty.activate
 def test_daily():
-    body_fixture = open("test/fixtures/full.json", "r").read()
+    body_fixture = open("test/fixtures/full.json").read()
     httpretty.register_uri(
         httpretty.GET, API_URL, body=body_fixture, content_type="text/json"
     )
@@ -80,16 +80,16 @@ def test_daily():
     assert "icon" in daily.keys()
     assert "summary" in daily.keys()
 
-    assert daily.icon == u"rain"
-    assert daily["icon"] == u"rain"
+    assert daily.icon == "rain"
+    assert daily["icon"] == "rain"
 
     assert (
         daily.summary
-        == u"Mixed precipitation off-and-on throughout the week; temperatures peaking at 70\xb0 on Sunday."
+        == "Mixed precipitation off-and-on throughout the week; temperatures peaking at 70\xb0 on Sunday."
     )
     assert (
         daily["summary"]
-        == u"Mixed precipitation off-and-on throughout the week; temperatures peaking at 70\xb0 on Sunday."
+        == "Mixed precipitation off-and-on throughout the week; temperatures peaking at 70\xb0 on Sunday."
     )
 
     assert len(daily["data"]) == 8
@@ -136,7 +136,7 @@ def test_daily():
 
 @httpretty.activate
 def test_hourly():
-    body_fixture = open("test/fixtures/full.json", "r").read()
+    body_fixture = open("test/fixtures/full.json").read()
     httpretty.register_uri(
         httpretty.GET, API_URL, body=body_fixture, content_type="text/json"
     )
@@ -144,10 +144,10 @@ def test_hourly():
     forecast = Forecast(API_KEY, latitude=LATITUDE, longitude=LONGITUDE)
     hourly = forecast.hourly
 
-    assert set(["data", "icon", "summary"]) == set(hourly.keys())
+    assert {"data", "icon", "summary"} == set(hourly.keys())
 
-    assert hourly["icon"] == u"partly-cloudy-day"
-    assert hourly["summary"] == u"Mostly cloudy until tomorrow afternoon."
+    assert hourly["icon"] == "partly-cloudy-day"
+    assert hourly["summary"] == "Mostly cloudy until tomorrow afternoon."
 
     assert "cloudCover" in hourly["data"][0].keys()
     assert "humidity" in hourly["data"][0].keys()
@@ -170,7 +170,7 @@ def test_hourly():
 
 @httpretty.activate
 def test_minutely():
-    body_fixture = open("test/fixtures/full.json", "r").read()
+    body_fixture = open("test/fixtures/full.json").read()
     httpretty.register_uri(
         httpretty.GET, API_URL, body=body_fixture, content_type="text/json"
     )
@@ -182,8 +182,8 @@ def test_minutely():
     assert "icon" in minutely.keys()
     assert "summary" in minutely.keys()
 
-    assert minutely["icon"] == u"partly-cloudy-day"
-    assert minutely["summary"] == u"Mostly cloudy for the hour."
+    assert minutely["icon"] == "partly-cloudy-day"
+    assert minutely["summary"] == "Mostly cloudy for the hour."
 
     assert len(minutely["data"]) == 61
     assert "precipIntensity" in minutely["data"][0].keys()

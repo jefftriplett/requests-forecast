@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # requests-forecast documentation build configuration file, created by
 # sphinx-quickstart on Tue Apr 16 10:00:35 2013.
@@ -40,8 +39,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"requests-forecast"
-copyright = u"2013, Jeff Triplett"
+project = "requests-forecast"
+copyright = "2013, Jeff Triplett"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -190,8 +189,8 @@ latex_documents = [
     (
         "index",
         "requests-forecast.tex",
-        u"requests-forecast Documentation",
-        u"Jeff Triplett",
+        "requests-forecast Documentation",
+        "Jeff Triplett",
         "manual",
     ),
 ]
@@ -225,8 +224,8 @@ man_pages = [
     (
         "index",
         "requests-forecast",
-        u"requests-forecast Documentation",
-        [u"Jeff Triplett"],
+        "requests-forecast Documentation",
+        ["Jeff Triplett"],
         1,
     )
 ]
@@ -244,8 +243,8 @@ texinfo_documents = [
     (
         "index",
         "requests-forecast",
-        u"requests-forecast Documentation",
-        u"Jeff Triplett",
+        "requests-forecast Documentation",
+        "Jeff Triplett",
         "requests-forecast",
         "One line description of project.",
         "Miscellaneous",

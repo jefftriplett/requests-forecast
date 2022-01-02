@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytz
 import requests
 import time as time_mod
@@ -61,7 +60,7 @@ class DataBlock(dict):
                     for alert in data[key]:
                         self.alerts.append(DataBlock(data=alert, timezone=timezone))
 
-            super(DataBlock, self).__init__(data)
+            super().__init__(data)
 
     def __getattr__(self, attr):
         try:
@@ -70,7 +69,7 @@ class DataBlock(dict):
             raise AttributeError(attr)
 
 
-class Forecast(object):
+class Forecast:
     json = None
     timezone = None
 
@@ -94,7 +93,7 @@ class Forecast(object):
             apikey=self.apikey,
             latitude=latitude or self.latitude,
             longitude=longitude or self.longitude,
-            time=",{}".format(time) if self.time else "",
+            time=f",{time}" if self.time else "",
             units=units if units else "auto",
         )
         print(url)
