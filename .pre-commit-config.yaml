@@ -1,0 +1,56 @@
+default_language_version:
+  python: python3.9
+
+exclude: |
+    (?x)^(
+        .git|
+        .vscode/launch.json
+    )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/rtts/djhtml
+    rev: 'v2.0.0'
+    hooks:
+      - id: djhtml
+        entry: djhtml --tabwidth 4
+        alias: autoformat
+      - id: djcss
+        alias: autoformat
+      - id: djjs
+        alias: autoformat
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+        alias: autoformat
+  - repo: https://github.com/asottile/blacken-docs
+    rev: 1.13.0
+    hooks:
+      - id: blacken-docs
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.246'
+    hooks:
+      - id: ruff
+        alias: autoformat
+  # - repo: https://github.com/codespell-project/codespell
+  #   rev: v2.2.2
+  #   hooks:
+  #     - id: codespell
+  #       args: [--write-changes]
+  #       alias: autoformat
+  # - repo: https://github.com/guilatrova/tryceratops
+  #   rev: v1.1.0
+  #   hooks:
+  #     - id: tryceratops
+  #       args: [--ignore, TC101, --ignore, TC200]
