@@ -1,9 +1,8 @@
 import pytz
 import requests
-import time as time_mod
-import warnings
 
 from datetime import datetime
+from pydantic import BaseModel
 
 
 __author__ = "Jeff Triplett"
@@ -13,7 +12,15 @@ __title__ = "requests-forecast"
 __version__ = "1.0.0"
 
 
-FORECAST_TEMPLATE = "https://api.darksky.net/forecast/{apikey}/{latitude},{longitude}{time}?units={units}"
+FORECAST_TEMPLATE = (
+    "https://weathermachine.io/api/"
+    "?apiKey={apikey}"
+    "&lat={latitude}"
+    "&lon={longitude}"
+    "&output={output}"
+    "&source={source}"
+    "&units={units}"
+)
 
 ALERT_FIELDS = ("alerts",)
 
@@ -31,6 +38,45 @@ TIME_FIELDS = (
 )
 
 
+class DataPoint(BaseModel):
+    apparentTemperature: float
+    apparentTemperatureMax: float
+    apparentTemperatureMin: float
+    aqi: int
+    cloudCover: float
+    dewPoint: float
+    humidity: float
+    icon: str
+    moonPhase: float
+    moonPhaseName: str
+    pollenGrass: int
+    pollenTree: int
+    pollenWeed: int
+    precipAccumulation: float
+    precipIntensity: float
+    precipProbability: float
+    precipType: str
+    pressure: float
+    pressureTrend: str
+    summary: str
+    sunriseTime: datetime
+    sunsetTime: datetime
+    temperature: float
+    temperatureMax: float
+    temperatureMin: float
+    time: datetime
+    uvIndex: int
+    visibility: float
+    windBearing: int
+    windGust: float
+    windSpeed: float
+
+
+class DataBlock(BaseModel):
+    data: list[DataPoint]
+    summary: str
+
+
 class DataBlock(dict):
     def __init__(self, data=None, timezone=None):
         self.timezone = str(timezone)
@@ -43,7 +89,6 @@ class DataBlock(dict):
                         ts = datetime.utcfromtimestamp(int(data[key])).replace(
                             tzinfo=utc
                         )
-                        # data[key] = tz.normalize(ts.astimezone(tz))
                         data[key] = tz.normalize(ts.astimezone(tz))
                     else:
                         data[key] = datetime.fromtimestamp(int(data[key]))
@@ -69,34 +114,47 @@ class Forecast:
     json = None
     timezone = None
 
-    def __init__(self, apikey, latitude=None, longitude=None, time=None, units=None):
+    def __init__(
+        self,
+        apikey: str,
+        latitude: float = None,
+        longitude: float = None,
+        output: str = None,
+        source: str = None,
+        units: str = None,
+    ):
         self.apikey = apikey
         self.latitude = latitude
         self.longitude = longitude
-        self.time = time
+        self.output = output
+        self.source = source
         self.units = units
 
-        self.get(latitude, longitude, time, units)
+        self.get(latitude=latitude, longitude=longitude, units=units)
 
         # if 'timezone' in self.json:
         #    self.timezone = pytz.timezone(self.json['timezone'])
 
-    def get(self, latitude=None, longitude=None, time=None, units=None):
-        if time:
-            time = int(time_mod.mktime(time.timetuple()))
-
+    def get(
+        self,
+        *,
+        latitude: float = None,
+        longitude: float = None,
+        output: str = None,
+        source: str = None,
+        units: str = None,
+    ):
         url = FORECAST_TEMPLATE.format(
             apikey=self.apikey,
             latitude=latitude or self.latitude,
             longitude=longitude or self.longitude,
-            time=f",{time}" if self.time else "",
-            units=units if units else "auto",
+            output=output if output else "base",
+            source=source if source else "mock",
+            units=units if units else "us",
         )
-        print(url)
 
-        # TODO: check for 200's and valid apikey...
         request = requests.get(url, headers={"Accept-Encoding": "gzip"})
-        print(request.status_code)
+        request.raise_for_status()
 
         self.json = request.json()
 
@@ -138,23 +196,3 @@ class Forecast:
         if "timezone" in self.json:
             return pytz.timezone(self.json["timezone"])
         return None
-
-    def get_alerts(self):
-        warnings.warn("deprecated", DeprecationWarning)
-        return self.alerts
-
-    def get_currently(self):
-        warnings.warn("deprecated", DeprecationWarning)
-        return self.currently
-
-    def get_daily(self):
-        warnings.warn("deprecated", DeprecationWarning)
-        return self.daily
-
-    def get_hourly(self):
-        warnings.warn("deprecated", DeprecationWarning)
-        return self.hourly
-
-    def get_minutely(self):
-        warnings.warn("deprecated", DeprecationWarning)
-        return self.minutely

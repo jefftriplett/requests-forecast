@@ -1,11 +1,9 @@
 build
 bumpversion
-httpretty
-inflection
-invoke
+dirty-equals
+pydantic
 pytest
 pytz
 requests
 Sphinx
 twine
-wheel

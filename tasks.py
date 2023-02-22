@@ -19,8 +19,8 @@ def foreman(c):
 @task
 def git_push(c):
     run("git push origin --all")
-    run("git push bitbucket --all")
-    run("git push gitlab --all")
+    # run("git push bitbucket --all")
+    # run("git push gitlab --all")
 
 
 @task
