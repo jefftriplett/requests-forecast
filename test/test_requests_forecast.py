@@ -1,8 +1,8 @@
 import httpretty
 
-from datetime import datetime
+# from datetime import datetime
+# from dirty_equals import IsPartialDict
 from dirty_equals import IsListOrTuple
-from dirty_equals import IsPartialDict
 
 from requests_forecast import Forecast
 

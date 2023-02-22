@@ -2,7 +2,8 @@ import pytz
 import requests
 
 from datetime import datetime
-from pydantic import BaseModel
+
+# from pydantic import BaseModel
 
 
 __author__ = "Jeff Triplett"
@@ -37,44 +38,44 @@ TIME_FIELDS = (
     "time",
 )
 
+# TODO: Refactor to use BaseModel
+# class DataPoint(BaseModel):
+#     apparentTemperature: float
+#     apparentTemperatureMax: float
+#     apparentTemperatureMin: float
+#     aqi: int
+#     cloudCover: float
+#     dewPoint: float
+#     humidity: float
+#     icon: str
+#     moonPhase: float
+#     moonPhaseName: str
+#     pollenGrass: int
+#     pollenTree: int
+#     pollenWeed: int
+#     precipAccumulation: float
+#     precipIntensity: float
+#     precipProbability: float
+#     precipType: str
+#     pressure: float
+#     pressureTrend: str
+#     summary: str
+#     sunriseTime: datetime
+#     sunsetTime: datetime
+#     temperature: float
+#     temperatureMax: float
+#     temperatureMin: float
+#     time: datetime
+#     uvIndex: int
+#     visibility: float
+#     windBearing: int
+#     windGust: float
+#     windSpeed: float
 
-class DataPoint(BaseModel):
-    apparentTemperature: float
-    apparentTemperatureMax: float
-    apparentTemperatureMin: float
-    aqi: int
-    cloudCover: float
-    dewPoint: float
-    humidity: float
-    icon: str
-    moonPhase: float
-    moonPhaseName: str
-    pollenGrass: int
-    pollenTree: int
-    pollenWeed: int
-    precipAccumulation: float
-    precipIntensity: float
-    precipProbability: float
-    precipType: str
-    pressure: float
-    pressureTrend: str
-    summary: str
-    sunriseTime: datetime
-    sunsetTime: datetime
-    temperature: float
-    temperatureMax: float
-    temperatureMin: float
-    time: datetime
-    uvIndex: int
-    visibility: float
-    windBearing: int
-    windGust: float
-    windSpeed: float
 
-
-class DataBlock(BaseModel):
-    data: list[DataPoint]
-    summary: str
+# class DataBlock(BaseModel):
+#     data: list[DataPoint]
+#     summary: str
 
 
 class DataBlock(dict):

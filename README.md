@@ -5,7 +5,7 @@
 
 ## :construction: WIP updates
 
-This project "just worked" for half a decade until DarkSky announced they were shuttering their support. 
+This project "just worked" for half a decade until DarkSky announced they were shuttering their support.
 
 This is a WIP upgrade to switch the API over to https://weathermachine.io
 
