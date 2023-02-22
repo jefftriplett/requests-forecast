@@ -10,7 +10,7 @@ __author__ = "Jeff Triplett"
 __copyright__ = "Copyright 2013-2021 Jeff Triplett"
 __license__ = "BSD"
 __title__ = "requests-forecast"
-__version__ = "1.0.0"
+__version__ = "2023.2.1"
 
 
 FORECAST_TEMPLATE = (

@@ -1,5 +1,5 @@
 build
-bumpversion
+bumpver
 dirty-equals
 pydantic
 pytest
